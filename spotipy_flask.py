@@ -23,10 +23,6 @@ cache_handler = FlaskSessionCacheHandler(session)
 oauth = SpotifyOAuth(client_id=client_id, client_secret=client_secret, redirect_uri=redirect_uri, scope=scope, cache_handler=cache_handler, show_dialog=True)
 sp = Spotify(auth_manager=oauth)
 
-app = Flask(__name__)
-app.secret_key = os.urandom(64)
-cache_handler = FlaskSessionCacheHandler(session)
-
 @app.route("/")
 def home():
     if not oauth.validate_token(cache_handler.get_cached_token()):
@@ -38,7 +34,7 @@ def callback():
     oauth.get_access_token(request.args["code"])
     return redirect(url_for("get_artist"))
 
-@app.route("/get_artist")
+@app.route("/get_artist", methods = ["GET", "POST"])
 
 
 
